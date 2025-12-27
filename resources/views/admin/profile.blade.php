@@ -1,5 +1,7 @@
 @extends('admin.dashboard')
 @section('admin')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 	<div class="page-content">
 
   
@@ -14,9 +16,7 @@
     <img class="wd-100 rounded-circle" src="{{ asset('upload/admin_images/' . ($profileData->photo ?? 'no_image.jpg')) }}" alt="profile">
                  <span class="h4 ms-3">{{ $profileData->username }}</span>
                   </div>
-                
                 </div>
-              
                 <div class="mt-3">
                   <label class="tx-11 fw-bolder mb-0 text-uppercase">User Name:</label>
                   <p class="text-muted">{{ $profileData->name }}</p>
@@ -55,30 +55,52 @@
                 <div class="card">
               <div class="card-body">
 
-								<h6 class="card-title">Basic Form</h6>
+								<h6 class="card-title">Update Admin Profile</h6>
 
-								<form class="forms-sample">
-									<div class="mb-3">
-										<label for="exampleInputUsername1" class="form-label">Username</label>
-										<input type="text" class="form-control" id="exampleInputUsername1" autocomplete="off" placeholder="Username">
-									</div>
-									<div class="mb-3">
-										<label for="exampleInputEmail1" class="form-label">Email address</label>
-										<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-									</div>
-									<div class="mb-3">
-										<label for="exampleInputPassword1" class="form-label">Password</label>
-										<input type="password" class="form-control" id="exampleInputPassword1" autocomplete="off" placeholder="Password">
-									</div>
-									<div class="form-check mb-3">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-										<label class="form-check-label" for="exampleCheck1">
-											Remember me
-										</label>
-									</div>
-									<button type="submit" class="btn btn-primary me-2">Submit</button>
-									<button class="btn btn-secondary">Cancel</button>
-								</form>
+      <form method="post" action="{{ route('admin.profile.store') }}" enctype="multipart/form-data" 
+      class="forms-sample">
+         @csrf         
+        <div class="mb-3">
+          <label for="exampleInputUsername1" class="form-label">Username</label>
+          <input name="username" type="text" value="{{ $profileData->username }}" class="form-control" 
+          id="exampleInputUsername1" autocomplete="off">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Name</label>
+         <input name="name" type="text" value="{{ $profileData->name }}" class="form-control" 
+         id="exampleInputUsername1" autocomplete="off" >
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email</label>
+         <input name="email" type="email" value="{{ $profileData->email }}" class="form-control" 
+         id="exampleInputUsername1" autocomplete="off" >
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Phone</label>
+         <input name="phone" type="text" value="{{ $profileData->phone }}" class="form-control" 
+         id="exampleInputUsername1" autocomplete="off" >
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Address</label>
+         <input name="address" type="text" value="{{ $profileData->address }}" class="form-control" 
+         id="exampleInputUsername1" autocomplete="off" >
+        </div>
+
+  <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Photo</label>
+         <input name="photo" class="form-control" type="file" id="image">
+         <br>
+       <img id="showImage" class="wd-80 rounded-circle" width="100" 
+       src="{{ asset('upload/admin_images/' . ($profileData->photo ?? 'no_image.jpg')) }}">
+  </div>                     
+     <br>
+        
+        <button type="submit" class="btn btn-primary me-2">Save Changes</button>
+
+      </form>
 
               </div>
             </div>
@@ -95,5 +117,18 @@
 
 
 
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    $('#image').change(function(e){
+      var reader=new FileReader();
+      reader.onload = function(e){
+        $('#showImage').attr('src',e.target.result);
+      }
+      reader.readAsDataURL(e.target.files['0']);
+    });
+  });
+
+</script>
 
 @endsection
