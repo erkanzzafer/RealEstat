@@ -12,6 +12,7 @@ class AdminController extends Controller
 {
     public function AdminDashboard()
     {
+        
         return view('admin.index');
     }
 
@@ -22,8 +23,11 @@ class AdminController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
-        return redirect('/admin/login');
+        $notification = array(
+            'message' => 'User Logout Successfully',
+            'alert-type' => 'success'
+        );
+        return redirect('/admin/login')->with($notification);
     }
 
     public function AdminLogin()
