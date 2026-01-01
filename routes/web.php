@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\Backend\PropertyTypeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,11 +34,11 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/user/profile',[UserController::class,'userProfile'])->name('user.profile');
-    Route::get('/user/logout',[UserController::class,'userLogout'])->name('user.logout');
-    Route::get('/user/change/password',[UserController::class,'userChangePassword'])->name('user.change.password');
-    Route::post('/user/profile/store',[UserController::class,'userProfileStore'])->name('user.profile.store');
-    Route::post('/user/password/update',[UserController::class,'userPasswordUpdate'])->name('user.password.update');
+    Route::get('/user/profile', [UserController::class, 'userProfile'])->name('user.profile');
+    Route::get('/user/logout', [UserController::class, 'userLogout'])->name('user.logout');
+    Route::get('/user/change/password', [UserController::class, 'userChangePassword'])->name('user.change.password');
+    Route::post('/user/profile/store', [UserController::class, 'userProfileStore'])->name('user.profile.store');
+    Route::post('/user/password/update', [UserController::class, 'userPasswordUpdate'])->name('user.password.update');
 });
 
 
@@ -51,6 +52,21 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/change/password', [AdminController::class, 'AdminChangePassword'])->name('admin.change.password');
     Route::post('/admin/update/password', [AdminController::class, 'AdminUpdatePassword'])->name('admin.update.password');
 
+
+});
+
+
+//Property Type
+Route::middleware(['auth', 'role:admin'])->group(function () {
+
+    Route::controller(PropertyTypeController::class)->group(function () {
+        Route::get('/all/type', 'AllType')->name('all.type');
+        Route::get('/add/type', 'AddType')->name('add.type');
+        Route::post('/store/type', 'StoreType')->name('store.type');
+        Route::get('/edit/type/{id}', 'EditType')->name('edit.type');
+        Route::post('/update/type', 'UpdateType')->name('update.type');
+         Route::get('/delete/type/{id}', 'DeleteType')->name('delete.type');
+    });
 });
 
 //Agent Route
